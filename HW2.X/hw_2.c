@@ -26,7 +26,7 @@ int main(void) {
 
     
 	if (NU32DIP_USER){
-		blink(x, 500); // 5 times, 500ms each time
+		blink(x, y); // 5 times, 500ms each time
 	}
   }
 }
