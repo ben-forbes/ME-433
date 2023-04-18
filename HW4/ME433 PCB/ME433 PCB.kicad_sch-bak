@@ -1,0 +1,59 @@
+(kicad_sch (version 20230121) (generator eeschema)
+
+  (uuid ee29606f-26c9-4102-94d1-291a8e17b87f)
+
+  (paper "A4")
+
+  (lib_symbols
+    (symbol "ME 433:PIC_32" (in_bom yes) (on_board yes)
+      (property "Reference" "U" (at 0 0 0)
+        (effects (font (size 1.27 1.27)))
+      )
+      (property "Value" "" (at 0 0 0)
+        (effects (font (size 1.27 1.27)))
+      )
+      (property "Footprint" "" (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "Datasheet" "" (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (symbol "PIC_32_1_1"
+        (pin input line (at -6.35 -3.81 180) (length 2.54)
+          (name "~{MCLR}" (effects (font (size 1.27 1.27))))
+          (number "1" (effects (font (size 1.27 1.27))))
+        )
+      )
+    )
+  )
+
+
+  (symbol (lib_id "ME 433:PIC_32") (at 138.43 74.93 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid 419ce682-0c6c-4b64-a899-22cc8778cfd2)
+    (property "Reference" "U1" (at 129.54 77.47 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "~" (at 138.43 74.93 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "" (at 138.43 74.93 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 138.43 74.93 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid bbe67f76-50e8-4187-bfe0-839c7583106d))
+    (instances
+      (project "ME 433 PCB"
+        (path "/ee29606f-26c9-4102-94d1-291a8e17b87f"
+          (reference "U1") (unit 1)
+        )
+      )
+    )
+  )
+
+  (sheet_instances
+    (path "/" (page "1"))
+  )
+)
