@@ -57,6 +57,7 @@ int main(void) {
         spi_io(c2b);
         LATBbits.LATB6 = 1;
         
+        
         _CP0_SET_COUNT(0);
         while( _CP0_GET_COUNT() < 120000){}
              
