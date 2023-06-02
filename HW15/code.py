@@ -1,3 +1,4 @@
+# Write your code here :-)
 # requires adafruit_ov7670.mpy and adafruit_st7735r.mpy in the lib folder
 import time
 from displayio import (
@@ -19,6 +20,8 @@ from adafruit_ov7670 import (
     OV7670_SIZE_DIV8,
     OV7670_SIZE_DIV16,
 )
+
+from ulab import numpy as np
 
 release_displays()
 spi = busio.SPI(clock=board.GP2, MOSI=board.GP3)
@@ -64,7 +67,7 @@ bitmap = None
 for size in range(OV7670_SIZE_DIV1, OV7670_SIZE_DIV16 + 1):
     #cam.size = size # for 4Hz
     #cam.size = OV7670_SIZE_DIV16 # for 30x40, 9Hz
-    cam.size = OV7670_SIZE_DIV8 # for 60x80, 9Hz
+    cam.size = OV7670_SIZE_DIV8 # for 60x80, 9Hz can do div4 for the wntire screen
     if cam.width > width:
         continue
     if cam.height > height:
@@ -88,10 +91,59 @@ display.show(g)
 
 t0 = time.monotonic_ns()
 display.auto_refresh = False
+
+reds = np.zeros(60,dtype=np.uint16)
+greens = np.zeros(60,dtype=np.uint16)
+blues = np.zeros(60,dtype=np.uint16)
+bright = np.zeros(60)
+
 while True:
     cam.capture(bitmap)
-    bitmap.dirty()
+    row = 40 # which row to send to the computer
+    # draw a red dot above the row, in the middle
+    bitmap[row+1,30] = 0x3F<<5 # this is [y,x] since we rotated the screen.
+    # force some colors to test the bits
+    #for i in range(0,20):
+    #    bitmap[row,i] = 0xF800 # blue
+    #for i in range(20,40):
+    #    bitmap[row,i] = 0x1F # green
+    #for i in range(40,60):
+    #    bitmap[row,i] = 0x7E0 # red
+    # calculate the colors
+    for i in range(0,60):
+        reds[i] = ((bitmap[row,i]>>5)&0x3F)/0x3F*100
+        greens[i] = ((bitmap[row,i])&0x1F)/0x1F*100
+        blues[i] = (bitmap[row,i]>>11)/0x1F*100
+        bright[i] = reds[i]+greens[i]+blues[i]
+
+    # threshold to try to find the line override the pixels to find the line
+    sum = 0
+    for i in range(0,60):
+        if (greens[i]>50 and blues[i]>50):
+            if (reds[i]<50):
+                bitmap[row,i] = 0xFFFF
+        else:
+            bitmap[row,i] = 0x0000
+        sum = bitmap[row,i] + sum
+    print(str(sum))
+    # print the raw pixel value to the computer
+
+    # center of mass calculation
+    com = 0
+    for i in range(0,60):
+        com = com + (bitmap[row,i]*i)
+    com = com/(sum)
+    # compare COM to the center of the image
+    # if the com is lower, left of line
+    # if com is highter, right of line
+
+    #for i in range(0,60):
+        #print(str(i)+" "+str(bitmap[row,i]))
+    #print("end")
+
+    bitmap.dirty() # updae the image on the screen
     display.refresh(minimum_frames_per_second=0)
     t1 = time.monotonic_ns()
     print("fps", 1e9 / (t1 - t0))
-    t0 = t1
+    t0 = t1# Write your code here :-)
+    print("com", str(com))
