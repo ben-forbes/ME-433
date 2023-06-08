@@ -25,8 +25,8 @@ void main() {
     OC1R = 6000;              // initialize before turning OC1 on; afterward it is read-only
     T2CONbits.ON = 1;        // turn on Timer2
     OC1CONbits.ON = 1;       // turn on OC1
-    
     LATBbits.LATB0 = 1;       // reset the B0 pin for the control of DC motors
+    
     while (1){
         OC1RS = 2000;
         _CP0_SET_COUNT(0);
